@@ -46,7 +46,7 @@ bot.on("message", (msg) => {
       });
       lariCall.end();
     }
-    setTimeout(lariGetir, 3000);
+    setTimeout(lariGetir, 1000);
   }
 
   var dolar = "dolar";
@@ -72,7 +72,7 @@ bot.on("message", (msg) => {
       });
       dolarCall.end();
     }
-    setTimeout(dolarGetir, 3000);
+    setTimeout(dolarGetir, 1000);
   }
 
   var euro = "euro";
@@ -98,7 +98,7 @@ bot.on("message", (msg) => {
       });
       euroCall.end();
     }
-    setTimeout(euroGetir, 3000);
+    setTimeout(euroGetir, 1000);
   }
 
   var selam = "selam";
@@ -118,7 +118,12 @@ bot.on("message", (msg) => {
 
   var zar = "fincan zar";
   if (msg.text.includes(zar)) {
-    bot.sendDice(msg.chat.id);
+    bot.sendAnimation(msg.chat.id, options.zarOnFoto, {});
+    function zarAt() {
+      const randKese = options.kese[Math.floor(Math.random() * 6) + 1];
+      bot.sendPhoto(msg.chat.id, randKese, {});
+    }
+    setTimeout(zarAt, 3000);
   }
 
   var bott = "bot";

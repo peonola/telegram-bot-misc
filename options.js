@@ -1,4 +1,4 @@
-const http = require("https");
+const fs = require("fs");
 
 const optionsUSD = {
   method: "GET",
@@ -37,22 +37,21 @@ const optionsAnime = {
   path: "/nsfw/waifu",
 };
 
-// function animeGetir() {
-//   var animeCall = http.request(optionsAnime, function (res) {
-//     var chunks = [];
+const zarOnFoto = fs.readFileSync(`./monopoly-gerben-steyaert.mp4`);
+const dice1 = fs.readFileSync(`./dices/dice1.png`);
+const dice2 = fs.readFileSync(`./dices/dice2.png`);
+const dice3 = fs.readFileSync(`./dices/dice3.png`);
+const dice4 = fs.readFileSync(`./dices/dice4.png`);
+const dice5 = fs.readFileSync(`./dices/dice5.png`);
+const dice6 = fs.readFileSync(`./dices/dice6.png`);
 
-//     res.on("data", function (chunk) {
-//       chunks.push(chunk);
-//     });
+const kese = [null, dice1, dice2, dice3, dice4, dice5, dice6];
 
-//     res.on("end", function () {
-//       var body = Buffer.concat(chunks);
-//       var bodyJSON = JSON.parse(body.toString());
-//       return bodyJSON.url;
-//     });
-//   });
-//   animeCall.end();
-// }
-// animeGetir();
-
-module.exports = { optionsAnime, optionsEUR, optionsUSD, optionsGEL };
+module.exports = {
+  optionsAnime,
+  optionsEUR,
+  optionsUSD,
+  optionsGEL,
+  zarOnFoto,
+  kese,
+};
