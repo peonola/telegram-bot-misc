@@ -1,13 +1,22 @@
 const TelegramBot = require("node-telegram-bot-api");
 require("dotenv").config();
-const http = require("https");
+const http = require("http");
 const options = require("./options");
 const bot = new TelegramBot(process.env.TELEGRAMTOKEN, { polling: true });
 
 bot.on("message", (msg) => {
-  var anime = "anime";
-  if (msg.text.toString().toLowerCase().includes(anime)) {
-    var animeCall = http.request(options.optionsAnime, function (res) {
+  var hava = "hava durumu";
+  if (msg.text.toString().toLowerCase().includes(hava)) {
+    let mesage = msg.text.toString().toLowerCase().slice(12);
+
+    const optionsHava = {
+      method: "GET",
+      hostname: "api.weatherstack.com",
+      port: null,
+      path: `/current?access_key=${process.env.WEATHERTOKEN}&query=${mesage}`,
+    };
+
+    var havaCall = http.request(optionsHava, function (res) {
       var chunks = [];
 
       res.on("data", function (chunk) {
@@ -17,11 +26,37 @@ bot.on("message", (msg) => {
       res.on("end", function () {
         var body = Buffer.concat(chunks);
         var bodyJSON = JSON.parse(body.toString());
-        bot.sendMessage(msg.chat.id, bodyJSON.url);
+        try {
+          bot.sendMessage(
+            msg.chat.id,
+            `Şuan ${bodyJSON.location.name} şehrinde sıcaklık <b>${bodyJSON.current.temperature} °C</b>`,
+            { parse_mode: "HTML" }
+          );
+        } catch (error) {
+          bot.sendMessage(msg.chat.id, "Bu şehri bulamadım :(");
+        }
       });
     });
-    animeCall.end();
+    havaCall.end();
   }
+
+  // var anime = "anime";
+  // if (msg.text.toString().toLowerCase().includes(anime)) {
+  //   var animeCall = http.request(options.optionsAnime, function (res) {
+  //     var chunks = [];
+
+  //     res.on("data", function (chunk) {
+  //       chunks.push(chunk);
+  //     });
+
+  //     res.on("end", function () {
+  //       var body = Buffer.concat(chunks);
+  //       var bodyJSON = JSON.parse(body.toString());
+  //       bot.sendMessage(msg.chat.id, bodyJSON.url);
+  //     });
+  //   });
+  //   animeCall.end();
+  // }
 
   var lari = "lari";
   if (msg.text.toString().toLowerCase().includes(lari)) {
@@ -108,7 +143,7 @@ bot.on("message", (msg) => {
 
   var bye = "bye";
   if (msg.text.toString().toLowerCase().includes(bye)) {
-    bot.sendMessage(msg.chat.id, "Siktirrr git " + msg.from.first_name);
+    bot.sendMessage(msg.chat.id, "Adios " + msg.from.first_name);
   }
 
   var what = "mal bot";
@@ -116,7 +151,7 @@ bot.on("message", (msg) => {
     bot.banChatMember(msg.chat.id, msg.from.id);
   }
 
-  var zar = "fincan zar";
+  var zar = "fincan";
   if (msg.text.includes(zar)) {
     bot.sendAnimation(msg.chat.id, options.zarOnFoto, {});
     function zarAt() {
@@ -124,6 +159,11 @@ bot.on("message", (msg) => {
       bot.sendPhoto(msg.chat.id, randKese, {});
     }
     setTimeout(zarAt, 3000);
+  }
+
+  var zarR = "zar";
+  if (msg.text.includes(zarR)) {
+    bot.sendDice(msg.chat.id);
   }
 
   var bott = "bot";
